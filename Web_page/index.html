@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IA Responde</title>
   <link rel="stylesheet" href="estilo.css" />
 </head>
+
 <body>
 
   <header class="header">
@@ -20,7 +22,8 @@
     <section class="intro">
       <h2>Bienvenido</h2>
       <p>
-        Este sistema te permite enviar consultas o correos simulados, y recibir una respuesta automatizada generada por inteligencia artificial. 
+        Este sistema te permite enviar consultas o correos simulados, y recibir una respuesta automatizada generada por
+        inteligencia artificial.
       </p>
     </section>
 
@@ -32,19 +35,27 @@
 
     <!-- 📤 Subida de archivo .eml -->
     <section id="modoArchivo" class="formulario active">
-        <h3>Subí un archivo de correo (.eml)</h3>
-      
-        <label for="archivoCorreo" class="custom-file-upload">
-            📩 Seleccioná tu archivo .eml
-        </label>
-        <input type="file" id="archivoCorreo" accept=".eml" />
-      
-        <button class="btn-lectura" onclick="leerCorreo()">Leer correo</button>
-      
-        <div id="contenidoCorreo" class="respuesta" style="display:none;"></div>
+      <h3>Subí un archivo de correo (.eml)</h3>
+
+      <label for="archivoCorreo" class="custom-file-upload">
+        📩 Seleccioná tu archivo .eml
+      </label>
+      <input type="file" id="archivoCorreo" accept=".eml" />
+
+      <button class="btn-lectura" onclick="leerCorreo()">Leer correo</button>
+
+      <div id="emisorCorreo" class="respuesta" style="display:none;">
+        <p id="emisorTexto"></p>
+      </div>
+
+      <div class="respuesta" id="contenidoCorreo" style="display:none;">
+        <pre id="cuerpoTexto"></pre>
+      </div>
+
+      <div id="contenidoCorreo" class="respuesta" style="display:none;"></div>
     </section>
-      
-      
+
+
 
     <!-- ✍ Consulta manual -->
     <section id="modoManual" class="formulario">
@@ -67,4 +78,5 @@
   <script src="script.js"></script>
 
 </body>
+
 </html>

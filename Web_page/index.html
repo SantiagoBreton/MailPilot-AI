@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IA Responde</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="img/logo.png" alt="Logo IA" />
+    </div>
+    <h1>Asistente Inteligente</h1>
+    <p class="subtitulo">Obtené respuestas generadas por inteligencia artificial</p>
+  </header>
+
+  <main class="contenido-principal">
+    <section class="intro">
+      <h2>Bienvenido</h2>
+      <p>
+        Este sistema te permite enviar consultas o correos simulados, y recibir una respuesta automatizada generada por inteligencia artificial. 
+      </p>
+    </section>
+
+    <!-- Selector de modo -->
+    <div class="modo-selector">
+      <button id="modoArchivoBtn" class="active" onclick="cambiarModo('archivo')">Subir archivo .eml</button>
+      <button id="modoManualBtn" onclick="cambiarModo('manual')">Escribir mensaje manual</button>
+    </div>
+
+    <!-- 📤 Subida de archivo .eml -->
+    <section id="modoArchivo" class="formulario active">
+        <h3>Subí un archivo de correo (.eml)</h3>
+      
+        <label for="archivoCorreo" class="custom-file-upload">
+            📩 Seleccioná tu archivo .eml
+        </label>
+        <input type="file" id="archivoCorreo" accept=".eml" />
+      
+        <button class="btn-lectura" onclick="leerCorreo()">Leer correo</button>
+      
+        <div id="contenidoCorreo" class="respuesta" style="display:none;"></div>
+    </section>
+      
+      
+
+    <!-- ✍ Consulta manual -->
+    <section id="modoManual" class="formulario">
+      <h3>O escribí tu mensaje manualmente</h3>
+      <textarea id="mensaje" placeholder="Escribí el contenido del correo..."></textarea>
+      <button onclick="enviarMensaje()">Enviar</button>
+    </section>
+
+    <section class="seccion-respuesta">
+      <h3>Respuesta generada</h3>
+      <div class="respuesta" id="respuestaIA" style="display:none;"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 IA Responde. Todos los derechos reservados.</p>
+    <p>Desarrollado por Santiago Breton.</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

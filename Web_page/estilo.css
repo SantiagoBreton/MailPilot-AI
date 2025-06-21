@@ -1,0 +1,276 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cuerpo general */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #eef2f3, #d6e2e9);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #333;
+}
+
+/* ENCABEZADO */
+.header {
+    background-color: #ffffffcc;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header .logo img {
+    max-width: 80px;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    font-size: 2em;
+    color: #2b4c6f;
+}
+
+.header .subtitulo {
+    color: #555;
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+/* CONTENIDO PRINCIPAL */
+.contenido-principal {
+    padding: 30px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.intro,
+.formulario,
+.seccion-respuesta {
+    margin-bottom: 40px;
+}
+
+.intro h2,
+.formulario h3,
+.seccion-respuesta h3 {
+    margin-bottom: 10px;
+    color: #2b4c6f;
+}
+
+.intro p {
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+/* Selector de modo (botones toggle) */
+.modo-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.modo-selector button {
+    padding: 10px 20px;
+    font-weight: bold;
+    background-color: #2b7a78;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modo-selector button.active,
+.modo-selector button:hover {
+    background-color: #205e5c;
+}
+
+/* Ocultar secciones por defecto */
+/* Ocultar formularios que no estén activos */
+.formulario {
+    display: none;
+    opacity: 0;
+    transform: scale(0.98);
+    transition: all 0.3s ease;
+  }
+  
+  .formulario.active {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+/* TEXTAREA */
+textarea {
+    width: 100%;
+    min-height: 150px;
+    font-size: 1rem;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    margin-top: 10px;
+}
+
+/* BOTÓN */
+button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #2b7a78;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #205e5c;
+}
+
+/* RESPUESTA */
+.respuesta {
+    background-color: #f0fdf4;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #2b7a78;
+    font-size: 1rem;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+/* PIE DE PÁGINA */
+.footer {
+    background-color: #ffffffcc;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #666;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#modoArchivo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* CENTRAR horizontal */
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #2193b0, #6dd5ed);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    max-width: 480px;
+    margin: 0 auto 50px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+#modoArchivo:hover {
+    transform: scale(1.03);
+}
+
+#modoArchivo h3 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Ocultar input file */
+#archivoCorreo {
+    display: none;
+}
+
+/* Botón para subir archivo con efecto gradiente y sombra */
+.custom-file-upload {
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    color: #222;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 6px 15px rgba(255, 214, 0, 0.6);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+    width: fit-content;
+    margin-bottom: 25px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.custom-file-upload:hover {
+    background: linear-gradient(90deg, #ffd200, #f7971e);
+    box-shadow: 0 10px 25px rgba(255, 214, 0, 0.8);
+    transform: translateY(-3px);
+}
+
+/* Botón Leer correo más grande, con sombra y transición */
+.btn-lectura {
+    width: 100%;
+    max-width: 300px;
+    padding: 18px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    background-color: #0093e9;
+    background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 8px 20px rgba(0, 147, 233, 0.6);
+    cursor: pointer;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.btn-lectura:hover {
+    background-color: #007bb5;
+    background-image: linear-gradient(160deg, #007bb5 0%, #57b9a0 100%);
+    box-shadow: 0 12px 28px rgba(0, 123, 181, 0.8);
+    transform: translateY(-4px);
+}
+
+/* Contenedor del contenido del mail */
+#contenidoCorreo {
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #1b1b1b;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 22px 28px;
+    border-radius: 16px;
+    border-left: 8px solid #0093e9;
+    max-height: 350px;
+    width: 100%;
+    overflow-y: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    text-align: left;
+    user-select: text;
+}
+
+
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .intro p {
+        font-size: 0.95rem;
+    }
+
+    button {
+        font-size: 0.95rem;
+    }
+}

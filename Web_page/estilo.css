@@ -93,19 +93,19 @@ body {
 /* Ocultar secciones por defecto */
 /* Ocultar formularios que no estén activos */
 .formulario {
-    display: none;
-    opacity: 0;
-    transform: scale(0.98);
-    transition: all 0.3s ease;
-  }
-  
-  .formulario.active {
-    display: flex;
-    flex-direction: column;
-    opacity: 1;
-    transform: scale(1);
-  }
-  
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;  /* para que no sea clickeable ni interactuable */
+  transition: opacity 0.3s ease;
+}
+
+.formulario.active {
+  display: flex !important;
+  opacity: 1;
+  pointer-events: auto;
+  flex-direction: column;
+}
+
 /* TEXTAREA */
 textarea {
     width: 100%;
@@ -258,6 +258,91 @@ button:hover {
     user-select: text;
 }
 
+#respuestaIA:empty {
+    display: none;
+}
+
+/* NUEVA SECCIÓN PARA RESPUESTA EDITABLE */
+
+#respuestaTexto {
+  display: none; /* Solo visible cuando hay respuesta */
+  width: 100%;
+  min-height: 150px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  margin-top: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  white-space: pre-wrap;
+  color: #333;
+  background-color: #f0fdf4;
+  box-sizing: border-box;
+}
+
+#botonesRespuesta {
+  margin-top: 10px;
+  display: none; /* Solo visible cuando hay respuesta */
+  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  display: flex;
+}
+
+#botonesRespuesta button {
+  padding: 10px 18px;
+  font-weight: 700;
+  background-color: #2b7a78;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#botonesRespuesta button:hover {
+  background-color: #205e5c;
+}
+
+/* Foco en textarea editable */
+#respuestaTexto:focus {
+  outline: 2px solid #2b7a78;
+  outline-offset: 2px;
+}
+#btnCopiar {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#btnCopiar:hover {
+  background-color: #005ea6;
+}
+.mensaje-copiado {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #2b7a78;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+
+.mensaje-copiado.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 
 /* RESPONSIVE */

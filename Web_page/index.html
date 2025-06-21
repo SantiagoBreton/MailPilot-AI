@@ -34,6 +34,7 @@
     </div>
 
     <!-- 📤 Subida de archivo .eml -->
+    <!-- 📤 Subida de archivo .eml -->
     <section id="modoArchivo" class="formulario active">
       <h3>Subí un archivo de correo (.eml)</h3>
 
@@ -42,17 +43,7 @@
       </label>
       <input type="file" id="archivoCorreo" accept=".eml" />
 
-      <button class="btn-lectura" onclick="leerCorreo()">Leer correo</button>
-
-      <div id="emisorCorreo" class="respuesta" style="display:none;">
-        <p id="emisorTexto"></p>
-      </div>
-
-      <div class="respuesta" id="contenidoCorreo" style="display:none;">
-        <pre id="cuerpoTexto"></pre>
-      </div>
-
-      <div id="contenidoCorreo" class="respuesta" style="display:none;"></div>
+      <button class="btn-lectura" onclick="leerCorreo()">Generar Respuesta</button>
     </section>
 
 
@@ -66,8 +57,10 @@
 
     <section class="seccion-respuesta">
       <h3>Respuesta generada</h3>
-      <div class="respuesta" id="respuestaIA" style="display:none;"></div>
+      <div class="respuesta" id="respuestaIA" contenteditable="false" style="display: none;"></div>
+      <button id="btnCopiar" onclick="copiarRespuesta()" style="display: none;">📋 Copiar al portapapeles</button>
     </section>
+
   </main>
 
   <footer class="footer">
@@ -76,6 +69,7 @@
   </footer>
 
   <script src="script.js"></script>
+  <div id="mensajeCopiado" class="mensaje-copiado">¡Respuesta copiada al portapapeles!</div>
 
 </body>
 

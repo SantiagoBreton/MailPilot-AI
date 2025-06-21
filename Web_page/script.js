@@ -10,11 +10,13 @@ function cambiarModo(modo) {
       manualSection.classList.remove('active');
       archivoBtn.classList.add('active');
       manualBtn.classList.remove('active');
+      archivoSection.style.display = 'flex'; // Mostrar sección de archivo
     } else {
       manualSection.classList.add('active');
       archivoSection.classList.remove('active');
       manualBtn.classList.add('active');
       archivoBtn.classList.remove('active');
+      archivoSection.style.display = 'none'; // Ocultar sección de archivo
     }
   }
   
@@ -29,76 +31,102 @@ function cambiarModo(modo) {
   
   // Leer archivo .eml, extraer texto plano y mostrarlo
   function leerCorreo() {
-    const input = document.getElementById('archivoCorreo');
-    const contenedor = document.getElementById('contenidoCorreo');
-    const respuestaDiv = document.getElementById('respuestaIA');
-  
-    if (!input.files || input.files.length === 0) {
-      alert("Por favor seleccioná un archivo .eml");
+  const input = document.getElementById('archivoCorreo');
+  const contenedor = document.getElementById('contenidoCorreo');
+  const cuerpoTexto = document.getElementById('cuerpoTexto');
+  const emisorDiv = document.getElementById('emisorCorreo');
+  const emisorTexto = document.getElementById('emisorTexto');
+  const respuestaDiv = document.getElementById('respuestaIA');
+
+  if (!input.files || input.files.length === 0) {
+    alert("Por favor seleccioná un archivo .eml");
+    return;
+  }
+
+  const archivo = input.files[0];
+  const lector = new FileReader();
+
+  lector.onload = function (e) {
+    const raw = e.target.result;
+
+    // Extraer emisor
+    const fromMatch = raw.match(/^From:\s*(.*)$/mi);
+    let nombreEmisor = "";
+    let emailEmisor = "";
+
+    if (fromMatch) {
+      const from = fromMatch[1].trim();
+
+      // Expresión regular para separar nombre y mail
+      const datosMatch = from.match(/^(.*?)(?:\s*<([^>]+)>)$/);
+
+      if (datosMatch) {
+        nombreEmisor = datosMatch[1].trim();      // → "Matias de Buren"
+        emailEmisor = datosMatch[2].trim();       // → "matias.de.buren@gmail.com"
+      } else {
+        // En caso de que venga solo el mail sin nombre
+        emailEmisor = from;
+      }
+    }
+
+    if (fromMatch) {
+      emisorDiv.style.display = "block";
+      emisorTexto.textContent = nombreEmisor + emailEmisor;
+    } else {
+      emisorDiv.style.display = "block";
+      emisorTexto.textContent = "No se pudo identificar el emisor.";
+    }
+
+    // Extraer boundary
+    const boundaryMatch = raw.match(/boundary="([^"]+)"/i);
+    if (!boundaryMatch) {
+      contenedor.style.display = "block";
+      cuerpoTexto.textContent = "No se encontró boundary en el correo.";
       return;
     }
-  
-    const archivo = input.files[0];
-    const lector = new FileReader();
-  
-    lector.onload = function (e) {
-      const raw = e.target.result;
-  
-      // Extraemos el boundary
-      const boundaryMatch = raw.match(/boundary="([^"]+)"/i);
-      if (!boundaryMatch) {
-        contenedor.style.display = "block";
-        contenedor.innerText = "No se encontró boundary en el correo.";
-        return;
+    const boundary = boundaryMatch[1];
+    const delimiter = "--" + boundary;
+
+    const parts = raw.split(delimiter);
+
+    // Buscar parte text/plain
+    let plainPart = null;
+    for (let part of parts) {
+      if (/Content-Type:\s*text\/plain/i.test(part)) {
+        plainPart = part;
+        break;
       }
-      const boundary = boundaryMatch[1];
-  
-      // Construimos el delimitador para separar partes
-      const delimiter = "--" + boundary;
-  
-      // Separamos el mail en partes usando el boundary
-      const parts = raw.split(delimiter);
-  
-      // Buscamos la parte text/plain
-      let plainPart = null;
-      for (let part of parts) {
-        if (/Content-Type:\s*text\/plain/i.test(part)) {
-          plainPart = part;
-          break;
-        }
-      }
-  
-      if (!plainPart) {
-        contenedor.style.display = "block";
-        contenedor.innerText = "No se encontró cuerpo de texto plano en el correo.";
-        return;
-      }
-  
-      // Extraemos el cuerpo (contenido después de doble salto de línea)
-      const bodyMatch = plainPart.match(/\r?\n\r?\n([\s\S]*)/);
-      let body = bodyMatch ? bodyMatch[1].trim() : "";
-  
-      // Decodificamos quoted-printable
-      body = decodeQuotedPrintable(body);
-  
-      // Mostramos contenido del correo
+    }
+
+    if (!plainPart) {
       contenedor.style.display = "block";
-      contenedor.innerText = body || "No se encontró contenido en texto plano.";
-  
-      // Simulamos respuesta IA con el contenido leído
-      respuestaDiv.style.display = "block";
-      respuestaDiv.innerHTML = "Procesando respuesta generada por IA...";
-      setTimeout(() => {
-        respuestaDiv.innerHTML = `Respuesta generada por IA (simulada):<br><br>Gracias por tu correo. Hemos recibido el siguiente contenido:<br><br><pre>${body}</pre>`;
-      }, 1500);
-    };
-  
-    lector.onerror = function () {
-      alert("Error al leer el archivo.");
-    };
-  
-    lector.readAsText(archivo);
-  }
+      cuerpoTexto.textContent = "No se encontró cuerpo de texto plano en el correo.";
+      return;
+    }
+
+    // Extraer cuerpo
+    const bodyMatch = plainPart.match(/\r?\n\r?\n([\s\S]*)/);
+    let body = bodyMatch ? bodyMatch[1].trim() : "";
+    body = decodeQuotedPrintable(body);
+
+    // Mostrar cuerpo
+    contenedor.style.display = "block";
+    cuerpoTexto.textContent = body || "No se encontró contenido en texto plano.";
+
+    // Simular respuesta IA
+    respuestaDiv.style.display = "block";
+    respuestaDiv.innerHTML = "Procesando respuesta generada por IA...";
+    setTimeout(() => {
+      respuestaDiv.innerHTML = `Respuesta generada por IA (simulada):<br><br>Gracias por tu correo. Hemos recibido el siguiente contenido:<br><br><pre>${body}</pre>`;
+    }, 1500);
+  };
+
+  lector.onerror = function () {
+    alert("Error al leer el archivo.");
+  };
+
+  lector.readAsText(archivo);
+}
   
   // Enviar mensaje manual y simular respuesta IA
   function enviarMensaje() {

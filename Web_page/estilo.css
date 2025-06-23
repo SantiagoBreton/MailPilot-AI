@@ -359,3 +359,66 @@ button:hover {
         font-size: 0.95rem;
     }
 }
+
+.tabs-principales {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.tab-btn {
+  padding: 14px 28px;
+  background-color: #2b7a78;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+  background-color: #205e5c;
+  transform: translateY(-2px);
+}
+
+.seccion-tab {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.seccion-tab.activa {
+  display: flex;
+}
+
+.estilo-eml {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  max-width: 480px;
+  margin: 0 auto 50px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.estilo-eml:hover {
+  transform: scale(1.03);
+}
+
+.estilo-eml h3 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+}

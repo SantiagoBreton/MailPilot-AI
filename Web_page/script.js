@@ -400,11 +400,11 @@ async function clasificar() {
       "OTROS": "#8c8c8c"
     };
 
-    for (const prioridad of ["URGENTE", "MUY IMPORTANTE", "IMPORTANTE","NO PRIORITARIO", "INNECESARIO RESPONDER","OTROS" ]) {
-  const grupo = data.clasificados[prioridad];
-  if (grupo.length === 0) continue;
+    for (const prioridad of ["URGENTE", "MUY IMPORTANTE", "IMPORTANTE", "NO PRIORITARIO", "INNECESARIO RESPONDER", "OTROS"]) {
+      const grupo = data.clasificados[prioridad];
+      if (grupo.length === 0) continue;
 
-  html += `
+      html += `
     <details open class="grupo-prioridad" data-prioridad="${prioridad}">
       <summary>
         ${prioridad} (${grupo.length})
@@ -412,17 +412,17 @@ async function clasificar() {
       <ul>
   `;
 
-  for (const item of grupo) {
-    html += `
+      for (const item of grupo) {
+        html += `
       <li>
         <strong>${item.remitente}:</strong> ${item.resumen}
         ${item.fecha_mencionada ? `<em> (fecha: ${item.fecha_mencionada})</em>` : ""}
       </li>
     `;
-  }
+      }
 
-  html += `</ul></details>`;
-}
+      html += `</ul></details>`;
+    }
 
     respuestaDiv.innerHTML = html;
     respuestaDiv.setAttribute("contenteditable", "true");

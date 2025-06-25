@@ -304,6 +304,9 @@ button:hover {
 #botonesRespuesta button:hover {
   background-color: #205e5c;
 }
+input[type="file"] {
+  display: none;
+}
 
 /* Foco en textarea editable */
 #respuestaTexto:focus {

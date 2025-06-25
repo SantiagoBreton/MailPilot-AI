@@ -337,3 +337,97 @@ async function resumir() {
     console.error(err);
   }
 }
+
+async function clasificar() {
+  const input = document.getElementById('archivoClasificar');
+  const respuestaDiv = document.getElementById('respuestaIA');
+  const btnCopiar = document.getElementById("btnCopiar");
+
+  respuestaDiv.style.display = 'block';
+  btnCopiar.style.display = "none";
+  respuestaDiv.innerHTML = "Procesando clasificación...";
+
+  if (!input.files || input.files.length === 0) {
+    alert("Por favor seleccioná al menos un archivo .eml.");
+    return;
+  }
+
+  const archivos = input.files;
+  const correosProcesados = [];
+
+  for (let archivo of archivos) {
+    const contenido = await archivo.text();
+
+    // Extraer emisor
+    const fromMatch = contenido.match(/^From:\s*(.*)$/mi);
+    const from = fromMatch ? fromMatch[1].trim() : "Desconocido";
+
+    // Extraer body plano
+    const boundaryMatch = contenido.match(/boundary="([^"]+)"/i);
+    if (!boundaryMatch) continue;
+    const boundary = boundaryMatch[1];
+    const parts = contenido.split("--" + boundary);
+    const part = parts.find(p => /Content-Type:\s*text\/plain/i.test(p));
+    if (!part) continue;
+    const bodyMatch = part.match(/\r?\n\r?\n([\s\S]*)/);
+    let body = bodyMatch ? bodyMatch[1].trim() : "";
+    body = decodeQuotedPrintable(body);
+
+    correosProcesados.push({ remitente: from, contenido: body });
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/clasificarMails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correos: correosProcesados })
+    });
+
+    const data = await res.json();
+    if (!data.clasificados) {
+      respuestaDiv.innerHTML = "No se pudo procesar la clasificación.";
+      return;
+    }
+
+    // Generar HTML agrupado con colores y secciones colapsables
+    let html = "";
+    const colores = {
+      "URGENTE": "#ff4d4f",
+      "MUY IMPORTANTE": "#ffa940",
+      "IMPORTANTE": "#1890ff",
+      "OTROS": "#8c8c8c"
+    };
+
+    for (const prioridad of ["URGENTE", "MUY IMPORTANTE", "IMPORTANTE", "OTROS"]) {
+  const grupo = data.clasificados[prioridad];
+  if (grupo.length === 0) continue;
+
+  html += `
+    <details open class="grupo-prioridad" data-prioridad="${prioridad}">
+      <summary>
+        ${prioridad} (${grupo.length})
+      </summary>
+      <ul>
+  `;
+
+  for (const item of grupo) {
+    html += `
+      <li>
+        <strong>${item.remitente}:</strong> ${item.resumen}
+        ${item.fecha_mencionada ? `<em> (fecha: ${item.fecha_mencionada})</em>` : ""}
+      </li>
+    `;
+  }
+
+  html += `</ul></details>`;
+}
+
+    respuestaDiv.innerHTML = html;
+    respuestaDiv.setAttribute("contenteditable", "true");
+    btnCopiar.style.display = "inline-block";
+
+  } catch (err) {
+    console.error(err);
+    respuestaDiv.innerHTML = "Error al conectar con la IA.";
+  }
+}

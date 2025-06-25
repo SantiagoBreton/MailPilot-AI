@@ -422,3 +422,90 @@ button:hover {
   font-weight: 700;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
 }
+
+#resultadoClasificacion h4 {
+  margin-top: 30px;
+  font-size: 1.4rem;
+  color: #2b4c6f;
+}
+
+#resultadoClasificacion ul {
+  list-style-type: disc;
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+
+#resultadoClasificacion li {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+  /* Contenedor general de resultados */
+  .grupo-prioridad {
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* Cabecera plegable (summary) */
+  .grupo-prioridad summary {
+    font-size: 1rem;
+    padding: 12px 20px;
+    font-weight: 600;
+    background: linear-gradient(to right, #333, #555);
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #444;
+  }
+
+  .grupo-prioridad summary::marker {
+    font-size: 1.2rem;
+  }
+
+  /* Lista interna */
+  .grupo-prioridad ul {
+    background-color: #fdfdfd;
+    padding: 15px 30px;
+    margin: 0;
+    list-style-type: disc;
+  }
+
+  .grupo-prioridad li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #222;
+  }
+
+  .grupo-prioridad li strong {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .grupo-prioridad li em {
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  /* Colores por prioridad */
+  .grupo-prioridad[data-prioridad="URGENTE"] summary {
+    background: linear-gradient(to right, #a8071a, #d32029);
+  }
+
+  .grupo-prioridad[data-prioridad="MUY IMPORTANTE"] summary {
+    background: linear-gradient(to right, #d48806, #fa8c16);
+  }
+
+  .grupo-prioridad[data-prioridad="IMPORTANTE"] summary {
+    background: linear-gradient(to right, #0050b3, #1890ff);
+  }
+
+  .grupo-prioridad[data-prioridad="OTROS"] summary {
+    background: linear-gradient(to right, #444, #777);
+  }
+
+  

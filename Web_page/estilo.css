@@ -304,6 +304,9 @@ button:hover {
 #botonesRespuesta button:hover {
   background-color: #205e5c;
 }
+input[type="file"] {
+  display: none;
+}
 
 /* Foco en textarea editable */
 #respuestaTexto:focus {
@@ -359,3 +362,153 @@ button:hover {
         font-size: 0.95rem;
     }
 }
+
+.tabs-principales {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.tab-btn {
+  padding: 14px 28px;
+  background-color: #2b7a78;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+  background-color: #205e5c;
+  transform: translateY(-2px);
+}
+
+.seccion-tab {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.seccion-tab.activa {
+  display: flex;
+}
+
+.estilo-eml {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  max-width: 480px;
+  margin: 0 auto 50px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.estilo-eml:hover {
+  transform: scale(1.03);
+}
+
+.estilo-eml h3 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+#resultadoClasificacion h4 {
+  margin-top: 30px;
+  font-size: 1.4rem;
+  color: #2b4c6f;
+}
+
+#resultadoClasificacion ul {
+  list-style-type: disc;
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+
+#resultadoClasificacion li {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+  /* Contenedor general de resultados */
+  .grupo-prioridad {
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* Cabecera plegable (summary) */
+  .grupo-prioridad summary {
+    font-size: 1rem;
+    padding: 12px 20px;
+    font-weight: 600;
+    background: linear-gradient(to right, #333, #555);
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #444;
+  }
+
+  .grupo-prioridad summary::marker {
+    font-size: 1.2rem;
+  }
+
+  /* Lista interna */
+  .grupo-prioridad ul {
+    background-color: #fdfdfd;
+    padding: 15px 30px;
+    margin: 0;
+    list-style-type: disc;
+  }
+
+  .grupo-prioridad li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #222;
+  }
+
+  .grupo-prioridad li strong {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .grupo-prioridad li em {
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  /* Colores por prioridad */
+  .grupo-prioridad[data-prioridad="URGENTE"] summary {
+    background: linear-gradient(to right, #a8071a, #d32029);
+  }
+
+  .grupo-prioridad[data-prioridad="MUY IMPORTANTE"] summary {
+    background: linear-gradient(to right, #d48806, #fa8c16);
+  }
+
+  .grupo-prioridad[data-prioridad="IMPORTANTE"] summary {
+    background: linear-gradient(to right, #0050b3, #1890ff);
+  }
+
+  .grupo-prioridad[data-prioridad="OTROS"] summary {
+    background: linear-gradient(to right, #444, #777);
+  }
+
+  

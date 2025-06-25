@@ -27,50 +27,100 @@
       </p>
     </section>
 
-    <!-- Selector de modo -->
-    <div class="modo-selector">
-      <button id="modoArchivoBtn" class="active" onclick="cambiarModo('archivo')">Subir archivo .eml</button>
-      <button id="modoManualBtn" onclick="cambiarModo('manual')">Escribir mensaje manual</button>
+    <!-- Botones principales -->
+    <div class="tabs-principales">
+      <button class="tab-btn active" onclick="cambiarSeccion('responder')">📧 Responder mail simple</button>
+      <button class="tab-btn" onclick="cambiarSeccion('resumir')">🗂️ Resumir múltiples correos</button>
+      <button class="tab-btn" onclick="cambiarSeccion('clasificar')">📌 Clasificar correos por prioridad</button>
     </div>
 
-    <!-- 📤 Subida de archivo .eml -->
-    <!-- 📤 Subida de archivo .eml -->
-    <section id="modoArchivo" class="formulario active">
-      <h3>Subí un archivo de correo (.eml)</h3>
+    <!-- SECCIÓN: RESPONDER -->
+    <div id="seccion-responder" class="seccion-tab activa">
+      <div class="modo-selector">
+        <button id="modoArchivoBtn" class="active" onclick="cambiarModo('archivo')">📁 Subir archivo .eml</button>
+        <button id="modoManualBtn" onclick="cambiarModo('manual')">✍️ Escribir mensaje manual</button>
+      </div>
 
-      <label for="archivoCorreo" class="custom-file-upload">
-        📩 Seleccioná tu archivo .eml
-      </label>
-      <input type="file" id="archivoCorreo" accept=".eml" />
+      <!-- 📤 Subida de archivo .eml -->
+      <section id="modoArchivo" class="formulario active">
+        <h3>Subí un archivo de correo (.eml)</h3>
+        <label for="archivoCorreoSimple" class="custom-file-upload">📩 Seleccioná tu archivo .eml</label>
+        <input type="file" id="archivoCorreoSimple" accept=".eml" />
+        <button class="btn-lectura" onclick="leerCorreo()">Generar Respuesta</button>
+      </section>
 
-      <button class="btn-lectura" onclick="leerCorreo()">Generar Respuesta</button>
-    </section>
+      <!-- Consulta manual -->
+      <section id="modoManual" class="formulario">
+        <h3>O escribí tu mensaje manualmente</h3>
+        <textarea id="mensaje" placeholder="Escribí el contenido del correo..."></textarea>
+        <button onclick="enviarMensaje()">Enviar</button>
+      </section>
+    </div>
+
+    <!-- SECCIÓN: RESUMIR -->
+    <div id="seccion-resumir" class="seccion-tab">
+      <section id="modoResumir" class="formulario active estilo-eml">
+        <h3>Subí varios archivos de correo (.eml)</h3>
+        <label for="archivoCorreoMultiples" class="custom-file-upload">📩 Seleccioná tus archivos .eml</label>
+        <input type="file" id="archivoCorreoMultiples" accept=".eml" multiple />
+        <button class="btn-lectura" onclick="resumir()">Resumir</button>
+      </section>
+    </div>
+
+    <!-- SECCIÓN: CLASIFICAR -->
+    <div id="seccion-clasificar" class="seccion-tab">
+      <section id="modoClasificar" class="formulario active estilo-eml">
+        <h3>Subí uno o varios correos para clasificarlos por prioridad</h3>
+        <label for="archivoClasificar" class="custom-file-upload">📥 Seleccioná tus archivos .eml </label>
+        <input type="file" id="archivoClasificar" accept=".eml" multiple />
+        <button class="btn-lectura" onclick="clasificar()">Clasificar</button>
+      </section>
+    </div>
 
 
-
-    <!-- ✍ Consulta manual -->
-    <section id="modoManual" class="formulario">
-      <h3>O escribí tu mensaje manualmente</h3>
-      <textarea id="mensaje" placeholder="Escribí el contenido del correo..."></textarea>
-      <button onclick="enviarMensaje()">Enviar</button>
-    </section>
-
+    <!-- RESPUESTA GENERADA -->
     <section class="seccion-respuesta">
       <h3>Respuesta generada</h3>
-      <div class="respuesta" id="respuestaIA" contenteditable="false" style="display: none;"></div>
+      <div id="respuestaIA" class="respuesta" style="display: none;"></div>
       <button id="btnCopiar" onclick="copiarRespuesta()" style="display: none;">📋 Copiar al portapapeles</button>
     </section>
-
   </main>
 
   <footer class="footer">
-    <p>© 2025 IA Responde. Todos los derechos reservados.</p>
-    <p>Desarrollado por Santiago Breton.</p>
+    <p>© 2025 MailPilot. Todos los derechos reservados.</p>
+    <p>Desarrollado por Santiago Breton y Matias de Buren.</p>
   </footer>
 
   <script src="script.js"></script>
+
+  
   <div id="mensajeCopiado" class="mensaje-copiado">¡Respuesta copiada al portapapeles!</div>
 
+  <style>
+    
+    .resumen-emisor {
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #f0fdf4;
+      border-left: 5px solid #2b7a78;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .resumen-emisor strong {
+      color: #205e5c;
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .seccion-respuesta h3::after {
+      content: " 📄 Agrupado por remitente";
+      font-size: 0.9rem;
+      color: #888;
+      margin-left: 10px;
+    }
+  </style>
 </body>
 
 </html>

@@ -395,10 +395,12 @@ async function clasificar() {
       "URGENTE": "#ff4d4f",
       "MUY IMPORTANTE": "#ffa940",
       "IMPORTANTE": "#1890ff",
+      "NO PRIORITARIO": "#52c41a",
+      "INNECESARIO RESPONDER": "#fadb14",
       "OTROS": "#8c8c8c"
     };
 
-    for (const prioridad of ["URGENTE", "MUY IMPORTANTE", "IMPORTANTE", "OTROS"]) {
+    for (const prioridad of ["URGENTE", "MUY IMPORTANTE", "IMPORTANTE","NO PRIORITARIO", "INNECESARIO RESPONDER","OTROS" ]) {
   const grupo = data.clasificados[prioridad];
   if (grupo.length === 0) continue;
 

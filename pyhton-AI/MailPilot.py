@@ -86,9 +86,11 @@ def clasificarMails():
         "Tu tarea es clasificar cada correo según la prioridad con base en su contenido.\n\n"
         "Usá las siguientes categorías:\n"
         "- URGENTE: debe responderse hoy\n"
-        "- MUY IMPORTANTE: debe responderse esta semana\n"
-        "- IMPORTANTE: puede responderse dentro de 2 semanas\n"
-        "- OTROS: no requiere respuesta\n\n"
+        "- MUY IMPORTANTE: debe responderse entre hooy y manana\n"
+        "- IMPORTANTE: puede responderse en esta semana\n"
+        "- NO PRIORITARIO: requiere si o si una respuest que puede responderse en esta mes, osea no es algo prioritario\n"
+        "- OTROS: no requiere respuesta inmediata\n\n"
+        "- INECESARIO RESPONDER: no requiere respuesta, o respodnerlo es totalmente opcional\n\n"
         "Para cada correo, devolvé un JSON con:\n"
         "- 'prioridad'\n"
         "- 'remitente'\n"
@@ -121,7 +123,9 @@ def clasificarMails():
             "URGENTE": [],
             "MUY IMPORTANTE": [],
             "IMPORTANTE": [],
-            "OTROS": []
+            "NO PRIORITARIO": [],
+            "OTROS": [],
+            "INNECESARIO RESPONDER": []
         }
 
         for item in clasificados_raw:

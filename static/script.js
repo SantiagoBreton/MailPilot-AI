@@ -147,6 +147,7 @@ async function enviarMensaje2(texto) {
     const res = await fetch("http://localhost:5000/responderMailSimple", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ contenidoCorreo: texto })
     });
 
@@ -188,6 +189,7 @@ async function enviarMensaje() {
     const res = await fetch("http://localhost:5000/responderMailSimple", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ contenidoCorreo: mensaje })
     });
 
@@ -316,6 +318,7 @@ async function resumir() {
     const res = await fetch("http://localhost:5000/resumirCorreos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ correos })
     });
 
@@ -380,6 +383,7 @@ async function clasificar() {
     const res = await fetch("http://localhost:5000/clasificarMails", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ correos: correosProcesados })
     });
 
@@ -431,5 +435,166 @@ async function clasificar() {
   } catch (err) {
     console.error(err);
     respuestaDiv.innerHTML = "Error al conectar con la IA.";
+  }
+}
+
+
+// script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Login button click
+  document.getElementById('btnLogin').addEventListener('click', () => {
+    window.location.href = 'http://localhost:5000/login';
+  });
+});
+
+// Fetch and display emails
+async function obtenerCorreos() {
+  const contenedor = document.getElementById('contenedorCorreos');
+  contenedor.innerHTML = "Cargando correos...";
+
+  try {
+    const res = await fetch('http://localhost:5000/listar-correos', {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (res.status === 401) {
+      contenedor.innerHTML = "No estás autenticado. Por favor inicia sesión primero.";
+      return;
+    }
+
+    if (!res.ok) {
+      contenedor.innerHTML = "Error al obtener correos.";
+      return;
+    }
+
+    const correos = await res.json();
+
+    if (!correos.length) {
+      contenedor.innerHTML = "No hay correos para mostrar.";
+      return;
+    }
+
+    let html = '';
+    correos.forEach(mail => {
+      html += `
+        <div class="correo" style="margin-bottom:10px;">
+          <input type="checkbox" class="checkbox-correo" value="${mail.id}" style="margin-right: 10px;">
+          <strong>De:</strong> ${mail.remitente} <br/>
+          <strong>Asunto:</strong> ${mail.asunto}
+        </div>
+      `;
+    });
+
+    contenedor.innerHTML = html;
+
+  } catch (error) {
+    contenedor.innerHTML = "Error en la comunicación con el servidor.";
+    console.error(error);
+  }
+}
+
+
+async function accionarCorreos(tipo) {
+  const seleccionados = [...document.querySelectorAll('.checkbox-correo:checked')];
+  if (seleccionados.length === 0) {
+    alert("Seleccioná al menos un correo.");
+    return;
+  }
+
+  const ids = seleccionados.map(cb => cb.value);
+
+  // Obtener todos los correos mostrados
+  const todos = await fetch("http://localhost:5000/listar-correos", {
+    credentials: "include"
+  });
+  const correos = await todos.json();
+
+  // Filtrar los seleccionados
+  const seleccionadosInfo = correos.filter(c => ids.includes(c.id));
+
+  // Elegir endpoint según tipo
+  let endpoint = "";
+  if (tipo === "responder") endpoint = "responderMailSimple";
+  if (tipo === "resumir") endpoint = "resumirCorreos";
+  if (tipo === "clasificar") endpoint = "clasificarMails";
+
+  const respuestaDiv = document.getElementById("respuestaIA");
+  respuestaDiv.innerHTML = "Procesando...";
+  respuestaDiv.style.display = "block";
+  console.log("Contenido a enviar:", seleccionadosInfo[0].contenido);
+
+
+  try {
+    const res = await fetch(`http://localhost:5000/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(
+        tipo === "resumir"
+          ? { correos: seleccionadosInfo.map(c => ({ emisor: c.remitente, cuerpo: c.contenido })) }
+          : tipo === "clasificar"
+            ? { correos: seleccionadosInfo.map(c => ({ remitente: c.remitente, contenido: c.contenido })) }
+            : { contenidoCorreo: seleccionadosInfo[0].contenido } // responderMailSimple solo usa uno
+      )
+    });
+
+    const data = await res.json();
+    if (data.respuesta) {
+      respuestaDiv.innerHTML = `${data.respuesta.replace(/\n/g, '<br>')}`;
+      respuestaDiv.style.display = "block";
+      document.getElementById("btnCopiar").style.display = "inline-block";
+      respuestaDiv.setAttribute("contenteditable", "true");
+
+    } else if (data.resumenes) {
+      let html = "";
+      for (const [emisor, resumen] of Object.entries(data.resumenes)) {
+        html += `<strong>${emisor}</strong><br>${resumen.replace(/\n/g, "<br>")}<br><br>`;
+      }
+      respuestaDiv.innerHTML = html;
+      respuestaDiv.setAttribute("contenteditable", "true");
+      document.getElementById("btnCopiar").style.display = "inline-block";
+
+    } else if (data.clasificados) {
+      const colores = {
+        "URGENTE": "#ff4d4f",
+        "MUY IMPORTANTE": "#ffa940",
+        "IMPORTANTE": "#1890ff",
+        "NO PRIORITARIO": "#52c41a",
+        "INNECESARIO RESPONDER": "#fadb14",
+        "OTROS": "#8c8c8c"
+      };
+
+      let html = "";
+
+      for (const prioridad of ["URGENTE", "MUY IMPORTANTE", "IMPORTANTE", "NO PRIORITARIO", "INNECESARIO RESPONDER", "OTROS"]) {
+        const grupo = data.clasificados[prioridad];
+        if (grupo.length === 0) continue;
+
+        html += `<details open class="grupo-prioridad" data-prioridad="${prioridad}">
+      <summary>${prioridad} (${grupo.length})</summary>
+      <ul>`;
+
+        for (const item of grupo) {
+          html += `<li><strong>${item.remitente}:</strong> ${item.resumen}`;
+          if (item.fecha_mencionada) {
+            html += ` <em>(fecha: ${item.fecha_mencionada})</em>`;
+          }
+          html += `</li>`;
+        }
+
+        html += `</ul></details>`;
+      }
+
+      respuestaDiv.innerHTML = html;
+      respuestaDiv.setAttribute("contenteditable", "true");
+      document.getElementById("btnCopiar").style.display = "inline-block";
+    }
+
+
+  } catch (err) {
+    console.error(err);
+    respuestaDiv.innerHTML = "Error al conectar con el servidor.";
   }
 }

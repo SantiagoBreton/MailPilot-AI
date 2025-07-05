@@ -26,4 +26,5 @@ out/
 logs/
 *.log
 
-# Coverage
+# credentials
+credentials.json

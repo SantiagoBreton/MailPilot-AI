@@ -5,14 +5,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IA Responde</title>
-  <link rel="stylesheet" href="estilo.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+
+
 </head>
 
 <body>
 
   <header class="header">
     <div class="logo">
-      <img src="img/logo.png" alt="Logo IA" />
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo IA" />
+
     </div>
     <h1>Asistente Inteligente</h1>
     <p class="subtitulo">Obtené respuestas generadas por inteligencia artificial</p>
@@ -84,6 +87,28 @@
       <div id="respuestaIA" class="respuesta" style="display: none;"></div>
       <button id="btnCopiar" onclick="copiarRespuesta()" style="display: none;">📋 Copiar al portapapeles</button>
     </section>
+
+    <button id="btnLogin">Iniciar sesión con Gmail</button>
+
+    <!-- Sección para mostrar los correos -->
+    <section id="seccionCorreos" style="margin-top:20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Últimos correos</h2>
+
+        <!-- 🟩 Action Buttons: Top-right -->
+        <div class="acciones-masivas">
+          <button onclick="accionarCorreos('responder')">Responder</button>
+          <button onclick="accionarCorreos('resumir')">Resumir</button>
+          <button onclick="accionarCorreos('clasificar')">Clasificar</button>
+        </div>
+      </div>
+
+      <div id="contenedorCorreos"></div>
+      <button onclick="obtenerCorreos()" style="margin-top: 10px;">🔄 Cargar correos</button>
+    </section>
+
+
+
   </main>
 
   <footer class="footer">
@@ -91,13 +116,14 @@
     <p>Desarrollado por Santiago Breton y Matias de Buren.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 
-  
+
+
+
   <div id="mensajeCopiado" class="mensaje-copiado">¡Respuesta copiada al portapapeles!</div>
 
   <style>
-    
     .resumen-emisor {
       margin-bottom: 25px;
       padding: 20px;
